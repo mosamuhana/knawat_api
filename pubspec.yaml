@@ -1,0 +1,10 @@
+name: knawat_api
+version: 0.0.1
+description: Knawat Dart API
+homepage: https://github.com/mosamuhana/knawat_api_dart
+
+environment:
+  sdk: ">=2.2.2 <3.0.0"
+
+dependencies:
+  http: ^0.12.2

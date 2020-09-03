@@ -1,0 +1,16 @@
+{
+    "count": 2031,
+    "categories": [
+        {
+            "id": 1,
+            "name": {
+                "ar": "xxx",
+                "en": "xxx",
+                "tr": "xxx"
+            },
+            "parentId": 0,
+            "productsCount": 1483,
+            "treeNodeLevel": 1
+        }
+    ]
+}
