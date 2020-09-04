@@ -3,8 +3,11 @@ version: 0.0.1
 description: Knawat Dart API
 homepage: https://github.com/mosamuhana/knawat_api_dart
 
+# sdk: ">=2.9.0 <3.0.0"
+# sdk: ">=2.10.0-56.0.dev <3.0.0"
+# sdk: ">=2.10.0-92.0.dev <3.0.0"
 environment:
-  sdk: ">=2.9.0 <3.0.0"
+  sdk: ">=2.10.0-73.0.dev <3.0.0"
 
 dependencies:
   http: ^0.12.2

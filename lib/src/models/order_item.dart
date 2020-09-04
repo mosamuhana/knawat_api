@@ -6,7 +6,7 @@ class OrderItem extends Equatable {
   final String name;
   final String description;
   final double rate;
-  final int? quantity;
+  final int quantity;
   final int discount;
   final double total;
   final String taxId;
