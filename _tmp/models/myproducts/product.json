@@ -1,0 +1,70 @@
+{
+    "sku": "xxx",
+    "name": {
+        "ar": "xxx",
+        "tr": "xxx",
+        "en": "xxx"
+    },
+    "description": {
+        "ar": "xxx",
+        "tr": "xxx",
+        "en": "xxx"
+    },
+    "images": [
+        "xxx"
+    ],
+    "updated": "xxx",
+    "created": "xxx",
+    "categories": [
+        {
+            "id": 1,
+            "name": {
+                "ar": "xxx",
+                "tr": "xxx",
+                "en": "xxx"
+            },
+            "parentId": 1,
+            "treeNodeLevel": 1
+        }
+    ],
+    "attributes": [
+        {
+            "name": {
+                "ar": "xxx",
+                "tr": "xxx",
+                "en": "xxx"
+            },
+            "options": [
+                {
+                    "ar": "xxx",
+                    "tr": "xxx",
+                    "en": "xxx"
+                }
+            ]
+        }
+    ],
+    "variations": [
+        {
+            "sku": "xxx",
+            "cost_price": 1.0,
+            "sale_price": 1.0,
+            "market_price": 1.0,
+            "weight": 1.0,
+            "attributes": [
+                {
+                    "name": {
+                        "ar": "xxx",
+                        "tr": "xxx",
+                        "en": "xxx"
+                    },
+                    "option": {
+                        "ar": "xxx",
+                        "tr": "xxx",
+                        "en": "xxx"
+                    }
+                }
+            ],
+            "quantity": 1
+        }
+    ]
+}

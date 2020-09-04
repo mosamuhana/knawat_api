@@ -1,45 +1,51 @@
-import 'dart:convert';
+import 'package:equatable/equatable.dart';
 
 import 'locale.dart';
 
-class Category {
+class Category extends Equatable {
   final int id;
-  final Locale name;
   final int parentId;
-  final int productsCount;
   final int treeNodeLevel;
+  final int productsCount;
+  final Locale name;
 
   Category({
     this.id,
-    this.name,
     this.parentId,
-    this.productsCount,
     this.treeNodeLevel,
+    this.productsCount,
+    this.name,
   });
+
+  @override
+  List<Object> get props => [id, parentId, treeNodeLevel, productsCount, name];
+
+  @override
+  bool get stringify => true;
 
   Category copyWith({
     int id,
-    Locale name,
     int parentId,
-    int productsCount,
     int treeNodeLevel,
+    int productsCount,
+    Locale name,
   }) {
     return Category(
       id: id ?? this.id,
-      name: name ?? this.name,
       parentId: parentId ?? this.parentId,
-      productsCount: productsCount ?? this.productsCount,
       treeNodeLevel: treeNodeLevel ?? this.treeNodeLevel,
+      productsCount: productsCount ?? this.productsCount,
+      name: name ?? this.name,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'name': name?.toMap(),
       'parentId': parentId,
-      'productsCount': productsCount,
       'treeNodeLevel': treeNodeLevel,
+      'productsCount': productsCount,
+      'name': name?.toMap(),
     };
   }
 
@@ -48,36 +54,10 @@ class Category {
 
     return Category(
       id: map['id']?.toInt(),
-      name: Locale.fromMap(map['name']),
       parentId: map['parentId']?.toInt(),
-      productsCount: map['productsCount']?.toInt(),
       treeNodeLevel: map['treeNodeLevel']?.toInt(),
+      productsCount: map['productsCount']?.toInt(),
+      name: Locale.fromMap(map['name']),
     );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory Category.fromJson(String source) => Category.fromMap(json.decode(source));
-
-  @override
-  String toString() {
-    return 'Category { id: $id, name: $name, parentId: $parentId, productsCount: $productsCount, treeNodeLevel: $treeNodeLevel }';
-  }
-
-  @override
-  bool operator ==(Object o) {
-    if (identical(this, o)) return true;
-
-    return o is Category &&
-        o.id == id &&
-        o.name == name &&
-        o.parentId == parentId &&
-        o.productsCount == productsCount &&
-        o.treeNodeLevel == treeNodeLevel;
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^ name.hashCode ^ parentId.hashCode ^ productsCount.hashCode ^ treeNodeLevel.hashCode;
   }
 }

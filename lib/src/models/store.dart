@@ -1,9 +1,6 @@
-import 'dart:convert';
+import 'package:equatable/equatable.dart';
 
-import '../utils.dart';
-import 'store_external_data.dart';
-
-class Store {
+class Store extends Equatable {
   final String consumerKey;
   final String consumerSecret;
   final String created;
@@ -45,6 +42,32 @@ class Store {
     this.type,
     this.url,
   });
+
+  @override
+  List<Object> get props => [
+        consumerKey,
+        consumerSecret,
+        created,
+        updated,
+        stockDate,
+        stockStatus,
+        priceDate,
+        priceStatus,
+        salePrice,
+        salePriceOperator,
+        comparedAtPrice,
+        comparedAtPriceOperator,
+        currency,
+        name,
+        externalData,
+        languages,
+        status,
+        type,
+        url,
+      ];
+
+  @override
+  bool get stringify => true;
 
   Store copyWith({
     String consumerKey,
@@ -139,62 +162,206 @@ class Store {
       url: map['url'],
     );
   }
+}
 
-  String toJson() => json.encode(toMap());
+class StoreExternalData extends Equatable {
+  final String defaultLanguage;
+  final String website;
+  final String timezone;
+  final List<String> shipsToCountries;
+  final String shopifyPlan;
+  final String accessToken;
+  final StoreFulfillmentService fulfillmentService;
+  final bool customRepush;
 
-  factory Store.fromJson(String source) => Store.fromMap(json.decode(source));
+  StoreExternalData({
+    this.defaultLanguage,
+    this.website,
+    this.timezone,
+    this.shipsToCountries,
+    this.shopifyPlan,
+    this.accessToken,
+    this.fulfillmentService,
+    this.customRepush,
+  });
 
   @override
-  String toString() {
-    return 'Store { consumer_key: $consumerKey, consumer_secret: $consumerSecret, created: $created, updated: $updated, stock_date: $stockDate, stock_status: $stockStatus, price_date: $priceDate, price_status: $priceStatus, sale_price: $salePrice, sale_price_operator: $salePriceOperator, compared_at_price: $comparedAtPrice, compared_at_price_operator: $comparedAtPriceOperator, currency: $currency, name: $name, external_data: $externalData, languages: $languages, status: $status, type: $type, url: $url }';
+  List<Object> get props => [
+        defaultLanguage,
+        website,
+        timezone,
+        shipsToCountries,
+        shopifyPlan,
+        accessToken,
+        fulfillmentService,
+        customRepush,
+      ];
+
+  @override
+  bool get stringify => true;
+
+  StoreExternalData copyWith({
+    String defaultLanguage,
+    String website,
+    String timezone,
+    List<String> shipsToCountries,
+    String shopifyPlan,
+    String accessToken,
+    String fulfillmentService,
+    bool customRepush,
+  }) {
+    return StoreExternalData(
+      defaultLanguage: defaultLanguage ?? this.defaultLanguage,
+      website: website ?? this.website,
+      timezone: timezone ?? this.timezone,
+      shipsToCountries: shipsToCountries ?? this.shipsToCountries,
+      shopifyPlan: shopifyPlan ?? this.shopifyPlan,
+      accessToken: accessToken ?? this.accessToken,
+      fulfillmentService: fulfillmentService ?? this.fulfillmentService,
+      customRepush: customRepush ?? this.customRepush,
+    );
   }
 
-  @override
-  bool operator ==(Object o) {
-    if (identical(this, o)) return true;
-
-    return o is Store &&
-        o.consumerKey == consumerKey &&
-        o.consumerSecret == consumerSecret &&
-        o.created == created &&
-        o.updated == updated &&
-        o.stockDate == stockDate &&
-        o.stockStatus == stockStatus &&
-        o.priceDate == priceDate &&
-        o.priceStatus == priceStatus &&
-        o.salePrice == salePrice &&
-        o.salePriceOperator == salePriceOperator &&
-        o.comparedAtPrice == comparedAtPrice &&
-        o.comparedAtPriceOperator == comparedAtPriceOperator &&
-        o.currency == currency &&
-        o.name == name &&
-        o.externalData == externalData &&
-        listEquals(o.languages, languages) &&
-        o.status == status &&
-        o.type == type &&
-        o.url == url;
+  Map<String, dynamic> toMap() {
+    return {
+      'default_language': defaultLanguage,
+      'website': website,
+      'timezone': timezone,
+      'ships_to_countries': shipsToCountries,
+      'shopify_plan': shopifyPlan,
+      'access_token': accessToken,
+      'fulfillmentService': fulfillmentService?.toMap(),
+      'custom_repush': customRepush,
+    };
   }
 
+  factory StoreExternalData.fromMap(Map<String, dynamic> map) {
+    if (map == null) return null;
+
+    return StoreExternalData(
+      defaultLanguage: map['default_language'],
+      website: map['website'],
+      timezone: map['timezone'],
+      shipsToCountries: List<String>.from(map['ships_to_countries']),
+      shopifyPlan: map['shopify_plan'],
+      accessToken: map['access_token'],
+      fulfillmentService: StoreFulfillmentService.fromMap(map['fulfillmentService']),
+      customRepush: map['custom_repush'],
+    );
+  }
+}
+
+class StoreFulfillmentService extends Equatable {
+  final int id;
+  final String name;
+  final String email;
+  final String serviceName;
+  final String handle;
+  final bool fulfillmentOrdersOptIn;
+  final bool includePendingStock;
+  final int providerId;
+  final int locationId;
+  final String callbackUrl;
+  final bool trackingSupport;
+  final bool inventoryManagement;
+
+  StoreFulfillmentService({
+    this.id,
+    this.name,
+    this.email,
+    this.serviceName,
+    this.handle,
+    this.fulfillmentOrdersOptIn,
+    this.includePendingStock,
+    this.providerId,
+    this.locationId,
+    this.callbackUrl,
+    this.trackingSupport,
+    this.inventoryManagement,
+  });
+
   @override
-  int get hashCode {
-    return consumerKey.hashCode ^
-        consumerSecret.hashCode ^
-        created.hashCode ^
-        updated.hashCode ^
-        stockDate.hashCode ^
-        stockStatus.hashCode ^
-        priceDate.hashCode ^
-        priceStatus.hashCode ^
-        salePrice.hashCode ^
-        salePriceOperator.hashCode ^
-        comparedAtPrice.hashCode ^
-        comparedAtPriceOperator.hashCode ^
-        currency.hashCode ^
-        name.hashCode ^
-        externalData.hashCode ^
-        languages.hashCode ^
-        status.hashCode ^
-        type.hashCode ^
-        url.hashCode;
+  List<Object> get props => [
+        id,
+        name,
+        email,
+        serviceName,
+        handle,
+        fulfillmentOrdersOptIn,
+        includePendingStock,
+        providerId,
+        locationId,
+        callbackUrl,
+        trackingSupport,
+        inventoryManagement,
+      ];
+
+  @override
+  bool get stringify => true;
+
+  StoreFulfillmentService copyWith({
+    int id,
+    String name,
+    String email,
+    String serviceName,
+    String handle,
+    bool fulfillmentOrdersOptIn,
+    bool includePendingStock,
+    int providerId,
+    int locationId,
+    String callbackUrl,
+    bool trackingSupport,
+    bool inventoryManagement,
+  }) {
+    return StoreFulfillmentService(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      serviceName: serviceName ?? this.serviceName,
+      handle: handle ?? this.handle,
+      fulfillmentOrdersOptIn: fulfillmentOrdersOptIn ?? this.fulfillmentOrdersOptIn,
+      includePendingStock: includePendingStock ?? this.includePendingStock,
+      providerId: providerId ?? this.providerId,
+      locationId: locationId ?? this.locationId,
+      callbackUrl: callbackUrl ?? this.callbackUrl,
+      trackingSupport: trackingSupport ?? this.trackingSupport,
+      inventoryManagement: inventoryManagement ?? this.inventoryManagement,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'email': email,
+      'service_name': serviceName,
+      'handle': handle,
+      'fulfillment_orders_opt_in': fulfillmentOrdersOptIn,
+      'include_pending_stock': includePendingStock,
+      'provider_id': providerId,
+      'location_id': locationId,
+      'callback_url': callbackUrl,
+      'tracking_support': trackingSupport,
+      'inventory_management': inventoryManagement,
+    };
+  }
+
+  factory StoreFulfillmentService.fromMap(Map<String, dynamic> map) {
+    if (map == null) return null;
+
+    return StoreFulfillmentService(
+      id: map['id']?.toInt(),
+      name: map['name'],
+      email: map['email'],
+      serviceName: map['service_name'],
+      handle: map['handle'],
+      fulfillmentOrdersOptIn: map['fulfillment_orders_opt_in'],
+      includePendingStock: map['include_pending_stock'],
+      providerId: map['provider_id']?.toInt(),
+      locationId: map['location_id']?.toInt(),
+      callbackUrl: map['callback_url'],
+      trackingSupport: map['tracking_support'],
+      inventoryManagement: map['inventory_management'],
+    );
   }
 }

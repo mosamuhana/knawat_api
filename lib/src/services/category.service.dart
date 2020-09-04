@@ -1,4 +1,6 @@
-import '../json.dart';
+import '../exceptions.dart';
+import '../helpers.dart';
+import '../internals.dart';
 import '../models.dart';
 import 'http.service.dart';
 
@@ -8,22 +10,15 @@ class CategoryService {
   CategoryService(this.httpService);
 
   Future<List<Category>> getAll([int parentId, int treeNodeLevel]) async {
-    Map<String, String> query;
-    if (parentId != null || treeNodeLevel != null) {
-      query = {
-        if (parentId != null) 'parentId': '$parentId',
-        if (treeNodeLevel != null) 'treeNodeLevel': '$treeNodeLevel',
-      };
-    }
+    var query = QueryParams.from({
+      'parentId': parentId,
+      'treeNodeLevel': treeNodeLevel,
+    }).toMap();
 
-    final res = await httpService.get('/catalog/categories', query: query, auth: AuthType.jwt);
+    final res = await httpService.get('/catalog/categories', query: query);
 
-    if (res.statusCode != 200) throw httpService.getError(res);
+    if (res.statusCode != 200) throw ApiException.from(res);
 
-    return Json.decodeResponse<List<dynamic>, List<Category>>(
-      res,
-      selector: (d) => d['categories'] as List<dynamic>,
-      map: (list) => list.map((map) => Category.fromMap(map)).toList(),
-    );
+    return JsonHelper.decodeListResponse(res, 'categories', (v) => Category.fromMap(v));
   }
 }

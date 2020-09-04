@@ -1,4 +1,4 @@
-import '../models.dart';
+import '../internals.dart';
 
 class API {
   static const String SCHEME = 'https';
@@ -12,12 +12,14 @@ class API {
   };
 
   static Map<String, String> getHeaders({Map<String, String> headers, AuthType auth, String token}) {
+    auth ??= AuthType.jwt;
+
     var newHeaders = {
       ...defaultHeaders,
       if (headers != null) ...headers,
     };
 
-    if (auth != null && token != null) {
+    if (token != null) {
       if (auth == AuthType.basic) {
         newHeaders['Authorization'] = 'Basic $token';
       } else if (auth == AuthType.jwt) {

@@ -1,73 +1,103 @@
-import 'dart:convert';
+import 'package:equatable/equatable.dart';
 
-import '../utils.dart';
+import '../helpers.dart';
 import 'attribute.dart';
+import 'category.dart';
 import 'locale.dart';
 import 'variation.dart';
 
-class Product {
+class Product extends Equatable {
   final String sku;
+  final DateTime updated;
+  final DateTime created;
+  final bool archive;
+  final String supplier;
+  final int taxClass;
   final Locale name;
   final Locale description;
   final List<String> images;
-  final String created;
-  final String updated;
+  final List<Category> categories;
   final List<Attribute> attributes;
   final List<Variation> variations;
-  final int externalId;
-  final String externalUrl;
+
+  @override
+  List<Object> get props => [
+        sku,
+        updated,
+        created,
+        archive,
+        supplier,
+        taxClass,
+        name,
+        description,
+        images,
+        categories,
+        attributes,
+        variations,
+      ];
+
+  @override
+  bool get stringify => true;
 
   Product({
     this.sku,
+    this.updated,
+    this.created,
+    this.archive,
+    this.supplier,
+    this.taxClass,
     this.name,
     this.description,
     this.images,
-    this.created,
-    this.updated,
+    this.categories,
     this.attributes,
     this.variations,
-    this.externalId,
-    this.externalUrl,
   });
 
   Product copyWith({
     String sku,
+    DateTime updated,
+    DateTime created,
+    bool archive,
+    String supplier,
+    int tax_class,
     Locale name,
     Locale description,
     List<String> images,
-    String created,
-    String updated,
+    List<Category> categories,
     List<Attribute> attributes,
     List<Variation> variations,
-    int externalId,
-    String externalUrl,
   }) {
     return Product(
       sku: sku ?? this.sku,
+      updated: updated ?? this.updated,
+      created: created ?? this.created,
+      archive: archive ?? this.archive,
+      supplier: supplier ?? this.supplier,
+      taxClass: tax_class ?? this.taxClass,
       name: name ?? this.name,
       description: description ?? this.description,
       images: images ?? this.images,
-      created: created ?? this.created,
-      updated: updated ?? this.updated,
+      categories: categories ?? this.categories,
       attributes: attributes ?? this.attributes,
       variations: variations ?? this.variations,
-      externalId: externalId ?? this.externalId,
-      externalUrl: externalUrl ?? this.externalUrl,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'sku': sku,
+      'updated': DateHelper.toJson(updated),
+      'created': DateHelper.toJson(created),
+      'archive': archive ?? false,
+      'supplier': supplier,
+      'tax_class': taxClass,
+      'images': images,
       'name': name?.toMap(),
       'description': description?.toMap(),
-      'images': images,
-      'created': created,
-      'updated': updated,
-      'attributes': attributes?.map((x) => x?.toMap())?.toList(),
-      'variations': variations?.map((x) => x?.toMap())?.toList(),
-      'externalId': externalId,
-      'externalUrl': externalUrl,
+      'categories': ListHelper.mapList<Category, Map<String, dynamic>>(categories, itemMap: (item) => item.toMap()),
+      'attributes': ListHelper.mapList<Attribute, Map<String, dynamic>>(attributes, itemMap: (item) => item.toMap()),
+      'variations': ListHelper.mapList<Variation, Map<String, dynamic>>(variations, itemMap: (item) => item.toMap()),
     };
   }
 
@@ -76,55 +106,17 @@ class Product {
 
     return Product(
       sku: map['sku'],
+      updated: DateHelper.fromJson(map['updated']),
+      created: DateHelper.fromJson(map['created']),
+      archive: map['archive'] == true,
+      supplier: map['supplier'],
+      taxClass: map['tax_class']?.toInt(),
       name: Locale.fromMap(map['name']),
       description: Locale.fromMap(map['description']),
       images: List<String>.from(map['images']),
-      created: map['created'],
-      updated: map['updated'],
-      attributes: List<Attribute>.from(map['attributes']?.map((x) => Attribute.fromMap(x))),
-      variations: List<Variation>.from(map['variations']?.map((x) => Variation.fromMap(x))),
-      externalId: map['externalId']?.toInt(),
-      externalUrl: map['externalUrl'],
+      categories: ListHelper.listFrom<Category>(map['categories'], itemMap: (item) => Category.fromMap(item)),
+      attributes: ListHelper.listFrom<Attribute>(map['attributes'], itemMap: (item) => Attribute.fromMap(item)),
+      variations: ListHelper.listFrom<Variation>(map['variations'], itemMap: (item) => Variation.fromMap(item)),
     );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory Product.fromJson(String source) => Product.fromMap(json.decode(source));
-
-  @override
-  String toString() {
-    return 'Product { sku: $sku, name: $name, description: $description, images: $images, created: $created, updated: $updated, attributes: $attributes, variations: $variations, externalId: $externalId, externalUrl: $externalUrl }';
-  }
-
-  @override
-  bool operator ==(Object o) {
-    if (identical(this, o)) return true;
-
-    return o is Product &&
-        o.sku == sku &&
-        o.name == name &&
-        o.description == description &&
-        listEquals(o.images, images) &&
-        o.created == created &&
-        o.updated == updated &&
-        listEquals(o.attributes, attributes) &&
-        listEquals(o.variations, variations) &&
-        o.externalId == externalId &&
-        o.externalUrl == externalUrl;
-  }
-
-  @override
-  int get hashCode {
-    return sku.hashCode ^
-        name.hashCode ^
-        description.hashCode ^
-        images.hashCode ^
-        created.hashCode ^
-        updated.hashCode ^
-        attributes.hashCode ^
-        variations.hashCode ^
-        externalId.hashCode ^
-        externalUrl.hashCode;
   }
 }

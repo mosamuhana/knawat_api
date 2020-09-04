@@ -1,6 +1,10 @@
-import 'dart:convert';
-
+import '../exceptions.dart';
+import '../helpers.dart';
+import '../internals.dart';
 import '../models.dart';
+import '../params.dart';
+import '../results.dart';
+import '../constants.dart';
 import 'http.service.dart';
 
 class MyProductsService {
@@ -8,27 +12,165 @@ class MyProductsService {
 
   MyProductsService(this.httpService);
 
-  void getProduct(String sku, {String currency}) {}
+  /// Get Products
+  ///
+  /// Retrieve imported products, sorted by create date DESC
+  ///
+  Future<List<Product>> getProducts({GetProductsParams params}) async {
+    var query = QueryParams.from(params?.toMap())?.toMap();
+    final res = await httpService.get('/catalog/products', query: query);
+    final code = res.statusCode;
 
-  /*
-  Future<List<Category>> getAll([int parentId, int treeNodeLevel]) async {
-    Map<String, String> query;
-    if (parentId != null || treeNodeLevel != null) {
-      query = {
-        if (parentId != null) 'parentId': '$parentId',
-        if (treeNodeLevel != null) 'treeNodeLevel': '$treeNodeLevel',
-      };
+    if (code == 200) {
+      return JsonHelper.decodeListResponse(res, 'products', (v) => Product.fromMap(v));
     }
 
-    final res = await httpService.get('/catalog/categories', query: query);
-
-    if (res.statusCode == 200) {
-      var data = json.decode(res.body);
-      List<dynamic> list = data['categories'];
-      return list.map((map) => Category.fromMap(map)).toList();
-    }
-
-    throw httpService.getError(res);
+    throw ApiException.from(res);
   }
-  */
+
+  /// Get product by SKU
+  ///
+  /// Retrieve single product information by Product SKU. product should be under this store
+  ///
+  Future<Product> getProduct(String sku, {String currency}) async {
+    var query = QueryParams.from({'currency': currency}).toMap();
+
+    final res = await httpService.get('/catalog/products/$sku', query: query);
+    final code = res.statusCode;
+
+    if (code == 200) {
+      return JsonHelper.decodeMapResponse(res, 'product', (v) => Product.fromMap(v));
+    }
+
+    if (code == 404) {
+      var message = JsonHelper.decodeErrors(res);
+      if (message != null) {
+        throw ApiException.notFound(message);
+      }
+    }
+
+    throw ApiException.from(res);
+  }
+
+  Future<bool> deleteProduct(String sku) async {
+    final res = await httpService.delete('/catalog/products/$sku');
+    final code = res.statusCode;
+
+    if (code == 200) {
+      /*
+      Delete Product Result (code == 200)
+      {
+          "product": {
+              "status": "success",
+              "message": "Product has been deleted.",
+              "sku": "A2KT18A82307-2213"
+          }
+      }
+      */
+      JsonHelper.tryDecode(
+        res,
+        orElse: () => false,
+        map: (data) {
+          final product = data['product'] as Map<String, String>;
+          return product['status'] == SUCCESS && product['sku'] == sku;
+        },
+      );
+
+      return true;
+    }
+
+    if (code == 500) {
+      final error = JsonHelper.decodeStatusMessageError(res);
+      if (error != null) throw error;
+    }
+
+    throw ApiException.from(res);
+  }
+
+  Future<bool> updateProduct(String sku, {UpdateProductParams params}) async {
+    final res = await httpService.put('/catalog/products/$sku', body: params?.toJson());
+    final code = res.statusCode;
+
+    if (code == 200) return true;
+
+    if (code == 404) {
+      throw ApiException.notFound('Product not found');
+    }
+
+    if (code == 500) {
+      final error = JsonHelper.decodeStatusMessageError(res);
+      if (error != null) throw error;
+    }
+
+    throw ApiException.from(res);
+  }
+
+  Future<AddProductsResult> addProducts(List<String> skuList) async {
+    final payload = <String, dynamic>{
+      'products': skuList.map((sku) => <String, String>{'sku': sku}).toList()
+    };
+
+    final res = await httpService.post('/catalog/products', body: JsonHelper.encode(payload));
+    final code = res.statusCode;
+
+    if (code == 200) {
+      return AddProductsResult.fromJson(res.body);
+    }
+
+    if (code == 500) {
+      final error = JsonHelper.decodeStatusMessageError(res);
+      if (error != null) throw error;
+    }
+
+    throw ApiException.from(res);
+  }
+
+  Future<bool> bulkUpdateProducts(List<BulkUpdateProductParams> items) async {
+    final res = await httpService.patch('/catalog/products', body: BulkUpdateProductParams.listToJson(items));
+    final code = res.statusCode;
+
+    if (code == 200) return true;
+
+    if (code == 500) {
+      final error = JsonHelper.decodeStatusMessageError(res);
+      if (error != null) throw error;
+    }
+
+    throw ApiException.from(res);
+  }
+
+  Future<int> productsCount() async {
+    final res = await httpService.get('/catalog/products/count');
+    final code = res.statusCode;
+
+    if (code == 200) {
+      return JsonHelper.tryDecode<int>(res, map: (data) => data['total']?.toInt());
+    }
+
+    if (code == 500) {
+      final error = JsonHelper.decodeStatusMessageError(res);
+      if (error != null) throw error;
+    }
+
+    throw ApiException.from(res);
+  }
+
+  Future<List<String>> searchProducts(SearchProductsParams params) async {
+    final res = await httpService.post('/catalog/products/search', body: params.toJson());
+    final code = res.statusCode;
+
+    if (code == 200) {
+      return JsonHelper.tryDecode<List<String>>(
+        res,
+        map: (data) => (data as List<dynamic>).map<String>((item) => item['sku']).toList(),
+      );
+    }
+
+    if (code == 500) {
+      final error = JsonHelper.decodeStatusMessageError(res);
+      if (error != null) throw error;
+    }
+
+    throw ApiException.from(res);
+  }
 }

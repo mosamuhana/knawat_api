@@ -2,11 +2,12 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
+//import 'package:http/http.dart';
 
-import 'api.dart';
-import 'exceptions.dart';
+import '../internals.dart';
 import '../models.dart';
+import 'api.dart';
+import '../exceptions.dart';
 
 class HttpService {
   final AuthKeys authKeys;
@@ -14,7 +15,7 @@ class HttpService {
 
   HttpService(this.authKeys);
 
-  Future<Response> get(
+  Future<http.Response> get(
     String path, {
     Map<String, String> headers,
     Map<String, String> query,
@@ -26,7 +27,7 @@ class HttpService {
     );
   }
 
-  Future<Response> delete(
+  Future<http.Response> delete(
     String path, {
     dynamic body,
     Map<String, String> headers,
@@ -39,7 +40,7 @@ class HttpService {
     );
   }
 
-  Future<Response> head(
+  Future<http.Response> head(
     String path, {
     dynamic body,
     Map<String, String> headers,
@@ -52,7 +53,7 @@ class HttpService {
     );
   }
 
-  Future<Response> post(
+  Future<http.Response> post(
     String path, {
     dynamic body,
     Map<String, String> headers,
@@ -67,7 +68,7 @@ class HttpService {
     );
   }
 
-  Future<Response> patch(
+  Future<http.Response> patch(
     String path, {
     dynamic body,
     Map<String, String> headers,
@@ -82,7 +83,7 @@ class HttpService {
     );
   }
 
-  Future<Response> put(
+  Future<http.Response> put(
     String path, {
     dynamic body,
     Map<String, String> headers,
@@ -123,62 +124,26 @@ class HttpService {
     );
   }
 
-  ApiException getError(Response res) {
-    final code = res.statusCode;
+  Future<Map<String, String>> _getHeaders(Map<String, String> headers, AuthType auth) async {
+    auth ??= AuthType.jwt;
 
-    if (res.statusCode == 401) {
-      return ApiException('Access token is missing or invalid, request new one', code: code);
+    if (auth == AuthType.none) return API.getHeaders(headers: headers);
+
+    String token;
+
+    if (auth == AuthType.jwt) {
+      final channel = await _getChannel();
+      token = channel.token;
+    } else {
+      final bytes = utf8.encode('${authKeys.username}:${authKeys.password}');
+      token = base64Encode(bytes);
     }
 
-    try {
-      final data = jsonDecode(res.body);
-      return ApiException(data['message'], code: code, type: data['type']);
-    } catch (e) {}
-
-    return ApiException('Error', code: code);
-  }
-
-  R getData<T, R>(
-    Response res, {
-    T Function(dynamic) selector,
-    R Function(T) map,
-  }) {
-    selector ??= (dynamic input) => input as T;
-    map ??= (T input) => input as R;
-    var data = json.decode(res.body);
-    var selected = selector(data);
-    return map(selected);
-
-    /*
-    List<dynamic> list = data['categories'];
-    var a = list.map((map) => Category.fromMap(map)).toList();
-    return a;
-    */
-  }
-
-  Future<Map<String, String>> _getHeaders(Map<String, String> headers, AuthType auth) async {
-    final token = await _getToken(auth);
     return API.getHeaders(
       headers: headers,
       auth: auth,
       token: token,
     );
-  }
-
-  Future<String> _getToken(AuthType auth) async {
-    if (auth == null) return null;
-
-    if (auth == AuthType.jwt) {
-      var channel = await _getChannel();
-      return channel.token;
-    }
-
-    if (authKeys.username == null || authKeys.password == null) {
-      throw Exception('can not find a user or password');
-    }
-
-    final bytes = utf8.encode('${authKeys.username}:${authKeys.password}');
-    return base64Encode(bytes);
   }
 
   Future<Channel> _getChannel() async {

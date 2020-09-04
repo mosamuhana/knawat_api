@@ -1,14 +1,11 @@
 export 'models/locale.dart';
 export 'models/attribute.dart';
-export 'models/get_products_params.dart';
-export 'models/product.dart';
-export 'models/store.dart';
-export 'models/store_external_data.dart';
-export 'models/store_fulfillment_service.dart';
 export 'models/variation.dart';
-export 'models/channel.dart';
-export 'models/auth_type.dart';
-export 'models/consumer_keys.dart';
-export 'models/auth_keys.dart';
 export 'models/category.dart';
-export 'models/categories_result.dart';
+export 'models/product.dart';
+
+export 'models/store.dart';
+export 'models/channel.dart';
+export 'models/auth_keys.dart';
+
+export 'models/order_item.dart';

@@ -1,13 +1,19 @@
-import 'dart:convert';
+import 'package:equatable/equatable.dart';
 
-import '../utils.dart';
+import '../helpers.dart';
 import 'locale.dart';
 
-class Attribute {
+class Attribute extends Equatable {
   final Locale name;
   final List<Locale> options;
 
   Attribute({this.name, this.options});
+
+  @override
+  List<Object> get props => [name, options];
+
+  @override
+  bool get stringify => true;
 
   Attribute copyWith({Locale name, List<Locale> options}) {
     return Attribute(
@@ -19,33 +25,15 @@ class Attribute {
   Map<String, dynamic> toMap() {
     return {
       'name': name?.toMap(),
-      'options': options?.map((x) => x?.toMap())?.toList(),
+      'options': ListHelper.mapList<Locale, Map<String, dynamic>>(options, itemMap: (item) => item.toMap()),
     };
   }
 
   factory Attribute.fromMap(Map<String, dynamic> map) {
     if (map == null) return null;
-
     return Attribute(
       name: Locale.fromMap(map['name']),
-      options: List<Locale>.from(map['options']?.map((x) => Locale.fromMap(x))),
+      options: ListHelper.listFrom<Locale>(map['options'], itemMap: (item) => Locale.fromMap(item)),
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory Attribute.fromJson(String source) => Attribute.fromMap(json.decode(source));
-
-  @override
-  String toString() => 'Attribute { name: $name, options: $options }';
-
-  @override
-  bool operator ==(Object o) {
-    if (identical(this, o)) return true;
-
-    return o is Attribute && o.name == name && listEquals(o.options, options);
-  }
-
-  @override
-  int get hashCode => name.hashCode ^ options.hashCode;
 }

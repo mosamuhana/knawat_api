@@ -1,1 +1,0 @@
-enum AuthType { basic, jwt }
