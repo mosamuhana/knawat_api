@@ -1,8 +1,10 @@
-import 'dart:convert';
+import 'package:equatable/equatable.dart';
 
+import '../helpers.dart';
+import '../enums.dart';
 import '../models.dart';
 
-class CreateOrderParams {
+class CreateOrderParams extends Equatable {
   final String id;
   final List<OrderItem> items;
   final ShippingAddress shipping;
@@ -18,8 +20,10 @@ class CreateOrderParams {
   final int taxTotal;
   final String financialStatus;
   final String fulfillmentStatus;
-  final String invoice_url;
+  final String invoiceUrl;
   final String warningsSnippet;
+  final String shippingMethod;
+  final String coupon;
 
   CreateOrderParams({
     this.id,
@@ -37,9 +41,37 @@ class CreateOrderParams {
     this.taxTotal,
     this.financialStatus,
     this.fulfillmentStatus,
-    this.invoice_url,
+    this.invoiceUrl,
     this.warningsSnippet,
+    this.shippingMethod,
+    this.coupon,
   });
+
+  @override
+  List<Object> get props => [
+        id,
+        items,
+        shipping,
+        total,
+        discount,
+        externalId,
+        createDate,
+        updateDate,
+        notes,
+        adjustment,
+        adjustmentDescription,
+        orderNumber,
+        taxTotal,
+        financialStatus,
+        fulfillmentStatus,
+        invoiceUrl,
+        warningsSnippet,
+        shippingMethod,
+        coupon,
+      ];
+
+  @override
+  bool get stringify => true;
 
   CreateOrderParams copyWith({
     String id,
@@ -57,8 +89,10 @@ class CreateOrderParams {
     int taxTotal,
     String financialStatus,
     String fulfillmentStatus,
-    String invoice_url,
+    String invoiceUrl,
     String warningsSnippet,
+    String shippingMethod,
+    String coupon,
   }) {
     return CreateOrderParams(
       id: id ?? this.id,
@@ -76,13 +110,15 @@ class CreateOrderParams {
       taxTotal: taxTotal ?? this.taxTotal,
       financialStatus: financialStatus ?? this.financialStatus,
       fulfillmentStatus: fulfillmentStatus ?? this.fulfillmentStatus,
-      invoice_url: invoice_url ?? this.invoice_url,
+      invoiceUrl: invoiceUrl ?? this.invoiceUrl,
       warningsSnippet: warningsSnippet ?? this.warningsSnippet,
+      shippingMethod: shippingMethod ?? this.shippingMethod,
+      coupon: coupon ?? this.coupon,
     );
   }
 
   Map<String, dynamic> toMap() {
-    return {
+    return MapHelper.filterNulls<String, dynamic>({
       'id': id,
       'items': items?.map((x) => x?.toMap())?.toList(),
       'shipping': shipping?.toMap(),
@@ -98,9 +134,11 @@ class CreateOrderParams {
       'taxTotal': taxTotal,
       'financialStatus': financialStatus,
       'fulfillmentStatus': fulfillmentStatus,
-      'invoice_url': invoice_url,
+      'invoice_url': invoiceUrl,
       'warningsSnippet': warningsSnippet,
-    };
+      'shipping_method': shippingMethod,
+      'coupon': coupon,
+    });
   }
 
   factory CreateOrderParams.fromMap(Map<String, dynamic> map) {
@@ -122,8 +160,40 @@ class CreateOrderParams {
       taxTotal: map['taxTotal']?.toInt(),
       financialStatus: map['financialStatus'],
       fulfillmentStatus: map['fulfillmentStatus'],
-      invoice_url: map['invoice_url'],
+      invoiceUrl: map['invoice_url'],
       warningsSnippet: map['warningsSnippet'],
+      shippingMethod: map['shipping_method'],
+      coupon: map['coupon'],
     );
   }
+}
+
+Map<String, dynamic> _fromMap(Map<String, dynamic> map) {
+  return {
+    'id': map['id'],
+    'items': ListHelper.fromMap<OrderItem>(map['items'], map: (item) => OrderItem.fromMap(item)),
+    'shipping': ShippingAddress.fromMap(map['shipping']),
+    'total': map['total']?.toDouble(),
+    'discount': map['discount']?.toInt(),
+    'externalId': map['externalId'],
+    'createDate': map['createDate'],
+    'updateDate': map['updateDate'],
+    'notes': map['notes'],
+    'adjustment': map['adjustment']?.toInt(),
+    'adjustmentDescription': map['adjustmentDescription'],
+    'orderNumber': map['orderNumber'],
+    'taxTotal': map['taxTotal']?.toInt(),
+    'financialStatus': map['financialStatus'],
+    'fulfillmentStatus': map['fulfillmentStatus'],
+    'invoiceUrl': map['invoice_url'],
+    'warningsSnippet': map['warningsSnippet'],
+    'shippingMethod': map['shipping_method'],
+    'coupon': map['coupon'],
+    // ...............
+    //'id': DynamicHelper.toInt(map['id']),
+    'parentId': DynamicHelper.toInt(map['parentId']),
+    'treeNodeLevel': DynamicHelper.toInt(map['treeNodeLevel']),
+    'productsCount': DynamicHelper.toInt(map['productsCount']),
+    'name': Locale.fromMap(map['name']),
+  };
 }
