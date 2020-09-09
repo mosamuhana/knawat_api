@@ -8,7 +8,7 @@ class CategoryService {
 
   CategoryService(this.httpService);
 
-  Future<PagedResult<Category>> getAll({int parentId, int treeNodeLevel}) async {
+  Future<PagedResult<Category>> getCategories({int parentId, int treeNodeLevel}) async {
     var query = QueryParams.fromMap({
       'parentId': parentId,
       'treeNodeLevel': treeNodeLevel,

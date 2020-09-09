@@ -24,3 +24,4 @@ doc/api/
 # Local files
 test.dart
 _tmp/
+test/

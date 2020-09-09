@@ -12,10 +12,6 @@ class MyProductsService {
 
   MyProductsService(this.httpService);
 
-  /// Get Products
-  ///
-  /// Retrieve imported products, sorted by create date DESC
-  ///
   Future<PagedResult<Product>> getProducts({GetProductsParams params}) async {
     var query = QueryParams.fromMap(params?.toMap())?.toMap();
     final res = await httpService.get('/catalog/products', query: query);
@@ -29,18 +25,14 @@ class MyProductsService {
     throw ApiException.from(res);
   }
 
-  /// Get product by SKU
-  ///
-  /// Retrieve single product information by Product SKU. product should be under this store
-  ///
   Future<Product> getProduct(String sku, {String currency}) async {
-    var query = QueryParams.fromMap({'currency': currency}).toMap();
+    var query = QueryParams.fromMap({'currency': currency})?.toMap();
 
     final res = await httpService.get('/catalog/products/$sku', query: query);
     final code = res.statusCode;
 
     if (code == 200) {
-      return JsonHelper.decodeMapResponse(res, 'product', (v) => Product.fromMap(v));
+      return JsonHelper.decodeMapResponse<Product>(res, 'product', (item) => Product.fromMap(item));
     }
 
     if (code == 404) {
@@ -72,7 +64,7 @@ class MyProductsService {
         res,
         orElse: () => false,
         map: (data) {
-          final product = data['product'] as Map<String, String>;
+          final product = data['product'] as Map<String, dynamic>;
           return product['status'] == SUCCESS && product['sku'] == sku;
         },
       );
@@ -157,7 +149,7 @@ class MyProductsService {
   }
 
   Future<List<String>> searchProducts(SearchProductsParams params) async {
-    final res = await httpService.post('/catalog/products/search', body: params.toJson());
+    final res = await httpService.post('/catalog/products/search', body: params?.toJson());
     final code = res.statusCode;
 
     if (code == 200) {

@@ -41,8 +41,10 @@ class JsonHelper {
     R Function(dynamic) fn,
   ) {
     var data = json.decode(res.body);
-    var map = (key == null ? data : data[key]) as Map<String, dynamic>;
-    return fn(map);
+    if (data == null) return null;
+    data = (key == null ? data : data[key]);
+    if (data == null) return null;
+    return fn(data);
   }
 
   static T tryDecode<T>(Response res, {T Function(dynamic) map, T Function() orElse}) {

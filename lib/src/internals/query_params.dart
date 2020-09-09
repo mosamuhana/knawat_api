@@ -30,7 +30,10 @@ class QueryParams {
     return map.map<String, String>((key, value) => MapEntry<String, String>(key, value));
   }
 
-  factory QueryParams.fromMap(Map<String, dynamic> map) => QueryParams._(_fromMap(map));
+  factory QueryParams.fromMap(Map<String, dynamic> map) {
+    var _map = _fromMap(map);
+    return _map == null ? null : QueryParams._(_map);
+  }
 }
 
 Map<String, String> _fromMap(Map<String, dynamic> map) {

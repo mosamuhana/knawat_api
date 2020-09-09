@@ -1,4 +1,4 @@
-import 'package:knawat_api/src/helpers/json_helper.dart';
+import '../helpers.dart';
 
 const SKU_KEYWORD = 'sku.keyword';
 const EXTERNAL_ID_KEYWORD = 'externalId.keyword';
@@ -8,33 +8,36 @@ class SearchProductsParams {
   final List<String> fields;
   final List<SearchQueryFilter> filter;
 
-  SearchProductsParams({
+  const SearchProductsParams({
     this.size,
     this.fields,
     this.filter,
   });
 
   Map<String, dynamic> toMap() {
-    return {
+    Map<String, dynamic> query;
+    var filters = filter?.map((x) => x?.toMap())?.where((x) => x != null)?.toList();
+    if (filters != null && filters.isNotEmpty) {
+      query = {'filter': filters};
+    }
+    return MapHelper.filterNulls({
       'size': size,
-      'fields': fields,
-      'query': <String, dynamic>{
-        'filter': filter?.map((x) => x?.toMap())?.toList(),
-      },
-    };
+      'fields': fields?.isEmpty ?? true ? null : fields,
+      'query': query,
+    });
   }
 
-  String toJson() => JsonHelper.encode(toMap());
+  String toJson() {
+    var map = toMap();
+    return map == null ? null : JsonHelper.encode(map);
+  }
 }
 
 class SearchQueryFilter {
   final SearchFilterTerm<String> term;
   final SearchFilterTerm<List<String>> terms;
 
-  SearchQueryFilter({
-    this.term,
-    this.terms,
-  });
+  SearchQueryFilter({this.term, this.terms});
 
   SearchQueryFilter copyWith({
     SearchFilterTerm<String> term,
@@ -47,10 +50,10 @@ class SearchQueryFilter {
   }
 
   Map<String, dynamic> toMap() {
-    return {
+    return MapHelper.filterNulls({
       'term': term?.toMap(),
       'terms': terms?.toMap(),
-    };
+    });
   }
 }
 
@@ -69,14 +72,25 @@ class SearchFilterTerm<T> {
     List<T> externalId,
   }) {
     if (sku != null) {
-      sku.forEach((value) => _map[SKU_KEYWORD] = value);
+      sku.forEach((value) {
+        if (value != null) {
+          _map[SKU_KEYWORD] = value;
+        }
+      });
     }
     if (externalId != null) {
-      externalId.forEach((value) => _map[EXTERNAL_ID_KEYWORD] = value);
+      externalId.forEach((value) {
+        if (value != null) {
+          _map[EXTERNAL_ID_KEYWORD] = value;
+        }
+      });
     }
   }
 
-  Map<String, dynamic> toMap() => _map.map((key, value) => MapEntry(key, value));
+  Map<String, dynamic> toMap() {
+    var map = _map.map<String, dynamic>((key, value) => MapEntry<String, dynamic>(key, value));
+    return MapHelper.filterNulls(map);
+  }
 }
 
 /*

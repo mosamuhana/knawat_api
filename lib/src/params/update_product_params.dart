@@ -4,21 +4,19 @@ class UpdateProductParams {
   final String externalUrl;
   final String externalId;
   final List<String> error;
-  final List<UpdateProductVariation> variations;
+  final List<ProductVariation> variations;
 
   UpdateProductParams({this.externalUrl, this.externalId, this.error, this.variations});
 
   Map<String, dynamic> toMap() {
-    final map = <String, dynamic>{};
-    if (externalUrl != null) map['externalUrl'] = externalUrl;
-    if (externalId != null) map['externalId'] = externalId;
-    if (error?.isNotEmpty ?? false) {
-      map['error'] = error;
-    }
-    final _variations = ListHelper.toMap<UpdateProductVariation>(variations, nullIfEmpty: true);
-    if (_variations != null) map['variations'] = _variations;
+    var map = MapHelper.filterNulls<String, dynamic>({
+      'externalUrl': externalUrl,
+      'externalId': externalId,
+      'error': error,
+      'variations': ListHelper.toMap<ProductVariation>(variations),
+    });
 
-    return map.isEmpty ? null : map;
+    return map == null || map.isEmpty ? null : map;
   }
 
   String toJson() {
@@ -32,7 +30,7 @@ class BulkUpdateProductParams {
   final String externalUrl;
   final String externalId;
   final List<String> error;
-  final List<UpdateProductVariation> variations;
+  final List<ProductVariation> variations;
 
   BulkUpdateProductParams({
     this.sku,
@@ -43,18 +41,15 @@ class BulkUpdateProductParams {
   }) : assert(sku != null);
 
   Map<String, dynamic> toMap() {
-    final map = <String, dynamic>{};
-    if (sku != null) map['sku'] = sku;
-    if (externalUrl != null) map['externalUrl'] = externalUrl;
-    if (externalId != null) map['externalId'] = externalId;
-    if (error?.isNotEmpty ?? false) {
-      map['error'] = error;
-    }
+    var map = MapHelper.filterNulls<String, dynamic>({
+      'sku': sku,
+      'externalUrl': externalUrl,
+      'externalId': externalId,
+      'error': error,
+      'variations': ListHelper.toMap<ProductVariation>(variations),
+    });
 
-    final _variations = ListHelper.toMap<UpdateProductVariation>(variations, nullIfEmpty: true);
-    if (_variations != null) map['variations'] = _variations;
-
-    return map.isEmpty ? null : map;
+    return map == null || map.isEmpty ? null : map;
   }
 
   static String listToJson(List<BulkUpdateProductParams> list) {
@@ -65,16 +60,16 @@ class BulkUpdateProductParams {
   }
 }
 
-class UpdateProductVariation {
+class ProductVariation {
   final String sku;
   final String externalId;
 
-  UpdateProductVariation({this.sku, this.externalId});
+  ProductVariation({this.sku, this.externalId});
 
   Map<String, dynamic> toMap() {
-    return {
+    return MapHelper.filterNulls({
       'sku': sku,
       'externalId': externalId,
-    };
+    });
   }
 }
