@@ -1,7 +1,9 @@
-class QueryParams {
-  Map<String, String> _map = {};
+import '../helpers.dart';
 
-  QueryParams();
+class QueryParams {
+  final Map<String, String> _map;
+
+  const QueryParams._(Map<String, String> map) : _map = map;
 
   int get length => _map.length;
 
@@ -17,17 +19,31 @@ class QueryParams {
 
   void removeKeys(List<String> keys) => _map.removeWhere((key, value) => keys.contains(key));
 
+  void remove(String key) => _map.remove(key);
+
   void clear(List<String> keys) => _map.clear();
 
   Map<String, String> toMap([bool nullIfEmpty = true]) {
-    if (nullIfEmpty && _map.isEmpty) return null;
-    return _map.map((key, value) => MapEntry<String, String>(key, value));
+    var map = MapHelper.filterNulls(_map);
+    if (map == null) return null;
+    if (nullIfEmpty && map.isEmpty) return null;
+    return map.map<String, String>((key, value) => MapEntry<String, String>(key, value));
   }
 
-  factory QueryParams.from(Map<String, dynamic> map) {
-    if (map == null) return null;
-    var q = QueryParams();
-    q.addMap(map);
-    return q;
-  }
+  factory QueryParams.fromMap(Map<String, dynamic> map) => QueryParams._(_fromMap(map));
+}
+
+Map<String, String> _fromMap(Map<String, dynamic> map) {
+  map = MapHelper.remap<String, dynamic>(map);
+  if (map == null) return null;
+
+  Map<String, String> _map = {};
+  map.forEach((key, value) {
+    if (value != null) {
+      _map[key] = value.toString();
+    }
+  });
+
+  return _map.isEmpty ? null : _map;
+  //return map.map<String, String>((key, value) => MapEntry<String, String>(key, value.toString()));
 }

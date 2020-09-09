@@ -7,7 +7,7 @@ class Attribute extends Equatable {
   final Locale name;
   final List<Locale> options;
 
-  Attribute({this.name, this.options});
+  const Attribute._({this.name, this.options});
 
   @override
   List<Object> get props => [name, options];
@@ -16,24 +16,33 @@ class Attribute extends Equatable {
   bool get stringify => true;
 
   Attribute copyWith({Locale name, List<Locale> options}) {
-    return Attribute(
+    return Attribute._(
       name: name ?? this.name,
       options: options ?? this.options,
     );
   }
 
   Map<String, dynamic> toMap() {
-    return {
+    return MapHelper.filterNulls<String, dynamic>({
       'name': name?.toMap(),
-      'options': ListHelper.mapList<Locale, Map<String, dynamic>>(options, itemMap: (item) => item.toMap()),
-    };
+      'options': ListHelper.toMap<Locale>(options),
+    });
   }
 
   factory Attribute.fromMap(Map<String, dynamic> map) {
+    map = MapHelper.remap<String, dynamic>(map, _fromMap);
     if (map == null) return null;
-    return Attribute(
-      name: Locale.fromMap(map['name']),
-      options: ListHelper.listFrom<Locale>(map['options'], itemMap: (item) => Locale.fromMap(item)),
+
+    return Attribute._(
+      name: map['name'],
+      options: map['options'],
     );
   }
+}
+
+Map<String, dynamic> _fromMap(Map<String, dynamic> map) {
+  return {
+    'name': Locale.fromMap(map['name']),
+    'options': ListHelper.fromMap<Locale>(map['options'], map: (item) => Locale.fromMap(item)),
+  };
 }

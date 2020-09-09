@@ -9,3 +9,5 @@ export 'models/channel.dart';
 export 'models/auth_keys.dart';
 
 export 'models/order_item.dart';
+
+export 'models/paged_result.dart';

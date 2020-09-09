@@ -9,8 +9,8 @@ class AddProductsResult {
   factory AddProductsResult.fromMap(Map<String, dynamic> map) {
     if (map == null) return null;
 
-    final _success = ListHelper.listFrom<String>(map['success'], nullIfEmpty: true);
-    final _outOfStock = ListHelper.listFrom<String>(map['outOfStock'], nullIfEmpty: true);
+    final _success = ListHelper.fromMap<String>(map['success'], map: (x) => x.toString(), nullIfEmpty: true);
+    final _outOfStock = ListHelper.fromMap<String>(map['outOfStock'], map: (x) => x.toString(), nullIfEmpty: true);
 
     if (_success == null && _outOfStock == null) return null;
 

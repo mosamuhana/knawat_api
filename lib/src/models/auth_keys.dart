@@ -4,7 +4,7 @@ class AuthKeys {
   final String username;
   final String password;
 
-  AuthKeys({
+  const AuthKeys({
     this.key,
     this.secret,
     this.username,

@@ -16,13 +16,14 @@ class MyProductsService {
   ///
   /// Retrieve imported products, sorted by create date DESC
   ///
-  Future<List<Product>> getProducts({GetProductsParams params}) async {
-    var query = QueryParams.from(params?.toMap())?.toMap();
+  Future<PagedResult<Product>> getProducts({GetProductsParams params}) async {
+    var query = QueryParams.fromMap(params?.toMap())?.toMap();
     final res = await httpService.get('/catalog/products', query: query);
     final code = res.statusCode;
 
     if (code == 200) {
-      return JsonHelper.decodeListResponse(res, 'products', (v) => Product.fromMap(v));
+      //print(res.body);
+      return PagedResult.from(res, itemsKey: 'products', mapFn: (v) => Product.fromMap(v));
     }
 
     throw ApiException.from(res);
@@ -33,7 +34,7 @@ class MyProductsService {
   /// Retrieve single product information by Product SKU. product should be under this store
   ///
   Future<Product> getProduct(String sku, {String currency}) async {
-    var query = QueryParams.from({'currency': currency}).toMap();
+    var query = QueryParams.fromMap({'currency': currency}).toMap();
 
     final res = await httpService.get('/catalog/products/$sku', query: query);
     final code = res.statusCode;

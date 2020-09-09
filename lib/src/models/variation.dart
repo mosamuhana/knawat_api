@@ -12,7 +12,7 @@ class Variation extends Equatable {
   final int quantity;
   final List<Attribute> attributes;
 
-  Variation({
+  const Variation._({
     this.sku,
     this.costPrice,
     this.salePrice,
@@ -23,7 +23,15 @@ class Variation extends Equatable {
   });
 
   @override
-  List<Object> get props => [sku, costPrice, salePrice, marketPrice, weight, quantity];
+  List<Object> get props => [
+        sku,
+        costPrice,
+        salePrice,
+        marketPrice,
+        weight,
+        quantity,
+        attributes,
+      ];
 
   @override
   bool get stringify => true;
@@ -37,7 +45,7 @@ class Variation extends Equatable {
     int quantity,
     List<Attribute> attributes,
   }) {
-    return Variation(
+    return Variation._(
       sku: sku ?? this.sku,
       costPrice: costPrice ?? this.costPrice,
       salePrice: salePrice ?? this.salePrice,
@@ -49,28 +57,41 @@ class Variation extends Equatable {
   }
 
   Map<String, dynamic> toMap() {
-    return {
+    return MapHelper.filterNulls({
       'sku': sku,
       'cost_price': costPrice,
       'sale_price': salePrice,
       'market_price': marketPrice,
       'weight': weight,
       'quantity': quantity,
-      'attributes': ListHelper.mapList<Attribute, Map<String, dynamic>>(attributes, itemMap: (item) => item.toMap()),
-    };
+      'attributes': ListHelper.toMap<Attribute>(attributes),
+    });
   }
 
   factory Variation.fromMap(Map<String, dynamic> map) {
+    map = MapHelper.remap<String, dynamic>(map, _fromMap);
     if (map == null) return null;
 
-    return Variation(
+    return Variation._(
       sku: map['sku'],
-      costPrice: map['cost_price']?.toDouble(),
-      salePrice: map['sale_price']?.toDouble(),
-      marketPrice: map['market_price']?.toDouble(),
-      weight: map['weight']?.toDouble(),
-      quantity: map['quantity']?.toInt(),
-      attributes: ListHelper.listFrom<Attribute>(map['attributes'], itemMap: (item) => Attribute.fromMap(item)),
+      costPrice: map['costPrice'],
+      salePrice: map['salePrice'],
+      marketPrice: map['marketPrice'],
+      weight: map['weight'],
+      quantity: map['quantity'],
+      attributes: map['attributes'],
     );
   }
+}
+
+Map<String, dynamic> _fromMap(Map<String, dynamic> map) {
+  return {
+    'sku': map['sku'],
+    'costPrice': DynamicHelper.toDouble(map['cost_price']),
+    'salePrice': DynamicHelper.toDouble(map['sale_price']),
+    'marketPrice': DynamicHelper.toDouble(map['market_price']),
+    'weight': DynamicHelper.toDouble(map['weight']),
+    'quantity': DynamicHelper.toInt(map['quantity']),
+    'attributes': ListHelper.fromMap<Attribute>(map['attributes'], map: (item) => Attribute.fromMap(item)),
+  };
 }

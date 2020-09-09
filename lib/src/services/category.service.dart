@@ -1,5 +1,4 @@
 import '../exceptions.dart';
-import '../helpers.dart';
 import '../internals.dart';
 import '../models.dart';
 import 'http.service.dart';
@@ -9,8 +8,8 @@ class CategoryService {
 
   CategoryService(this.httpService);
 
-  Future<List<Category>> getAll([int parentId, int treeNodeLevel]) async {
-    var query = QueryParams.from({
+  Future<PagedResult<Category>> getAll({int parentId, int treeNodeLevel}) async {
+    var query = QueryParams.fromMap({
       'parentId': parentId,
       'treeNodeLevel': treeNodeLevel,
     }).toMap();
@@ -19,6 +18,11 @@ class CategoryService {
 
     if (res.statusCode != 200) throw ApiException.from(res);
 
-    return JsonHelper.decodeListResponse(res, 'categories', (v) => Category.fromMap(v));
+    return PagedResult.from(
+      res,
+      totalKey: 'count',
+      itemsKey: 'categories',
+      mapFn: (item) => Category.fromMap(item),
+    );
   }
 }

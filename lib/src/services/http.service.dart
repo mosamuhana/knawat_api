@@ -2,12 +2,11 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
-//import 'package:http/http.dart';
 
 import '../internals.dart';
 import '../models.dart';
+import '../helpers.dart';
 import 'api.dart';
-import '../exceptions.dart';
 
 class HttpService {
   final AuthKeys authKeys;
@@ -150,14 +149,14 @@ class HttpService {
     if (_channel == null) {
       final url = API.getUrl('/token');
 
-      final keys = ConsumerKeys(
-        consumerKey: authKeys.key,
-        consumerSecret: authKeys.secret,
-      );
+      final keys = ConsumerKeys.fromMap({
+        'consumerKey': authKeys.key,
+        'consumerSecret': authKeys.secret,
+      });
 
       final res = await http.post(
         url,
-        body: keys.toJson(),
+        body: JsonHelper.encode(keys.toMap()),
         headers: API.defaultHeaders,
       );
 

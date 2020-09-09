@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../helpers.dart';
+
 class GetProductsParams extends Equatable {
   final int limit;
   final int page;
@@ -50,7 +52,7 @@ class GetProductsParams extends Equatable {
   }
 
   Map<String, dynamic> toMap() {
-    return {
+    return MapHelper.filterNulls({
       'limit': limit,
       'page': page,
       'lastupdate': lastupdate,
@@ -59,7 +61,7 @@ class GetProductsParams extends Equatable {
       'hasExternalId': hasExternalId == true ? 1 : null,
       'hideOutOfStock': hideOutOfStock == true ? 1 : null,
       'currency': currency,
-    };
+    });
   }
 
   factory GetProductsParams.fromMap(Map<String, dynamic> map) {

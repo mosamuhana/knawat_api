@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import 'locale.dart';
+import '../helpers.dart';
 
 class Category extends Equatable {
   final int id;
@@ -9,7 +10,7 @@ class Category extends Equatable {
   final int productsCount;
   final Locale name;
 
-  Category({
+  const Category._({
     this.id,
     this.parentId,
     this.treeNodeLevel,
@@ -30,7 +31,7 @@ class Category extends Equatable {
     int productsCount,
     Locale name,
   }) {
-    return Category(
+    return Category._(
       id: id ?? this.id,
       parentId: parentId ?? this.parentId,
       treeNodeLevel: treeNodeLevel ?? this.treeNodeLevel,
@@ -40,24 +41,35 @@ class Category extends Equatable {
   }
 
   Map<String, dynamic> toMap() {
-    return {
+    return MapHelper.filterNulls({
       'id': id,
       'parentId': parentId,
       'treeNodeLevel': treeNodeLevel,
       'productsCount': productsCount,
       'name': name?.toMap(),
-    };
+    });
   }
 
   factory Category.fromMap(Map<String, dynamic> map) {
+    map = MapHelper.remap<String, dynamic>(map, _fromMap);
     if (map == null) return null;
 
-    return Category(
-      id: map['id']?.toInt(),
-      parentId: map['parentId']?.toInt(),
-      treeNodeLevel: map['treeNodeLevel']?.toInt(),
-      productsCount: map['productsCount']?.toInt(),
-      name: Locale.fromMap(map['name']),
+    return Category._(
+      id: map['id'],
+      parentId: map['parentId'],
+      treeNodeLevel: map['treeNodeLevel'],
+      productsCount: map['productsCount'],
+      name: map['name'],
     );
   }
+}
+
+Map<String, dynamic> _fromMap(Map<String, dynamic> map) {
+  return {
+    'id': DynamicHelper.toInt(map['id']),
+    'parentId': DynamicHelper.toInt(map['parentId']),
+    'treeNodeLevel': DynamicHelper.toInt(map['treeNodeLevel']),
+    'productsCount': DynamicHelper.toInt(map['productsCount']),
+    'name': Locale.fromMap(map['name']),
+  };
 }

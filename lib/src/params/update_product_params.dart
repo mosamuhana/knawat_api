@@ -12,13 +12,10 @@ class UpdateProductParams {
     final map = <String, dynamic>{};
     if (externalUrl != null) map['externalUrl'] = externalUrl;
     if (externalId != null) map['externalId'] = externalId;
-    final _error = ListHelper.mapList<String, String>(error, nullIfEmpty: true);
-    if (_error != null) map['error'] = _error;
-    final _variations = ListHelper.mapList<UpdateProductVariation, Map<String, dynamic>>(
-      variations,
-      itemMap: (item) => item.toMap(),
-      nullIfEmpty: true,
-    );
+    if (error?.isNotEmpty ?? false) {
+      map['error'] = error;
+    }
+    final _variations = ListHelper.toMap<UpdateProductVariation>(variations, nullIfEmpty: true);
     if (_variations != null) map['variations'] = _variations;
 
     return map.isEmpty ? null : map;
@@ -50,13 +47,11 @@ class BulkUpdateProductParams {
     if (sku != null) map['sku'] = sku;
     if (externalUrl != null) map['externalUrl'] = externalUrl;
     if (externalId != null) map['externalId'] = externalId;
-    final _error = ListHelper.mapList<String, String>(error, nullIfEmpty: true);
-    if (_error != null) map['error'] = _error;
-    final _variations = ListHelper.mapList<UpdateProductVariation, Map<String, dynamic>>(
-      variations,
-      itemMap: (item) => item.toMap(),
-      nullIfEmpty: true,
-    );
+    if (error?.isNotEmpty ?? false) {
+      map['error'] = error;
+    }
+
+    final _variations = ListHelper.toMap<UpdateProductVariation>(variations, nullIfEmpty: true);
     if (_variations != null) map['variations'] = _variations;
 
     return map.isEmpty ? null : map;
