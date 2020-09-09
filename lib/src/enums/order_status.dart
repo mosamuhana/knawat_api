@@ -20,10 +20,10 @@ extension OrderStatusExt on OrderStatus {
   }
 }
 
-OrderStatus orderStatusFromString(String str) {
-  if (str == null) return null;
+OrderStatus toOrderStatus(dynamic input) {
+  if (input == null) return null;
 
-  switch (str) {
+  switch (input.toString()) {
     case 'draft':
       return OrderStatus.Draft;
     case 'open':

@@ -27,10 +27,10 @@ extension OrderSortExt on OrderSortBy {
   }
 }
 
-OrderSortBy orderSortByFromString(String str) {
-  if (str == null) return null;
+OrderSortBy toOrderSortBy(dynamic input) {
+  if (input == null) return null;
 
-  switch (str) {
+  switch (input.toString()) {
     case 'created_time':
       return OrderSortBy.CreatedTime;
     case 'customer_name':

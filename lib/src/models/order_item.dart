@@ -4,11 +4,12 @@ import '../helpers.dart';
 
 class OrderItem extends Equatable {
   final String id;
-  final String sku;
+  final String sku; // (required)
   final String name;
   final String description;
-  final double rate;
-  final int quantity;
+  final double rate; // Item price
+  final int quantity; // (required)
+  final int quantityCancelled;
   final int discount;
   final double total;
   final String taxId;
@@ -23,6 +24,7 @@ class OrderItem extends Equatable {
     this.description,
     this.rate,
     this.quantity,
+    this.quantityCancelled,
     this.discount,
     this.total,
     this.taxId,
@@ -38,6 +40,7 @@ class OrderItem extends Equatable {
         description,
         rate,
         quantity,
+        quantityCancelled,
         discount,
         total,
         taxId,
@@ -56,6 +59,7 @@ class OrderItem extends Equatable {
     String description,
     double rate,
     int quantity,
+    int quantityCancelled,
     int discount,
     double total,
     String taxId,
@@ -70,6 +74,7 @@ class OrderItem extends Equatable {
       description: description ?? this.description,
       rate: rate ?? this.rate,
       quantity: quantity ?? this.quantity,
+      quantityCancelled: quantityCancelled ?? this.quantityCancelled,
       discount: discount ?? this.discount,
       total: total ?? this.total,
       taxId: taxId ?? this.taxId,
@@ -80,13 +85,14 @@ class OrderItem extends Equatable {
   }
 
   Map<String, dynamic> toMap() {
-    return MapHelper.filterNulls({
+    return MapHelper.filterNulls<String, dynamic>({
       'id': id,
       'sku': sku,
       'name': name,
       'description': description,
       'rate': rate,
       'quantity': quantity,
+      'quantityCancelled': quantityCancelled,
       'discount': discount,
       'total': total,
       'taxId': taxId,
@@ -107,6 +113,7 @@ class OrderItem extends Equatable {
       description: map['description'],
       rate: map['rate'],
       quantity: map['quantity'],
+      quantityCancelled: map['quantityCancelled'],
       discount: map['discount'],
       total: map['total'],
       taxId: map['taxId'],
@@ -125,6 +132,7 @@ Map<String, dynamic> _fromMap(Map<String, dynamic> map) {
     'description': map['description'],
     'rate': DynamicHelper.toDouble(map['rate']),
     'quantity': DynamicHelper.toInt(map['quantity']),
+    'quantityCancelled': DynamicHelper.toInt(map['quantityCancelled']),
     'discount': DynamicHelper.toInt(map['discount']),
     'total': DynamicHelper.toDouble(map['total']),
     'taxId': map['taxId'],

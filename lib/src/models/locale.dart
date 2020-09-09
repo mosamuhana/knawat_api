@@ -28,7 +28,13 @@ class Locale extends Equatable {
     );
   }
 
-  Map<String, dynamic> toMap() => {'ar': ar, 'tr': tr, 'en': en};
+  Map<String, dynamic> toMap() {
+    return MapHelper.filterNulls<String, dynamic>({
+      'ar': ar,
+      'tr': tr,
+      'en': en,
+    });
+  }
 
   factory Locale.fromMap(Map<String, dynamic> map) {
     map = MapHelper.remap<String, dynamic>(map, _fromMap);

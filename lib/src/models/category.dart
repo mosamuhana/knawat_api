@@ -41,7 +41,7 @@ class Category extends Equatable {
   }
 
   Map<String, dynamic> toMap() {
-    return MapHelper.filterNulls({
+    return MapHelper.filterNulls<String, dynamic>({
       'id': id,
       'parentId': parentId,
       'treeNodeLevel': treeNodeLevel,

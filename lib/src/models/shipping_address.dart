@@ -3,20 +3,22 @@ import 'package:equatable/equatable.dart';
 import '../helpers.dart';
 
 class ShippingAddress extends Equatable {
-  final String firstName;
-  final String lastName;
-  final String address1;
+  final String firstName; // required
+  final String lastName; // required
+  final String company;
+  final String address1; // required
   final String address2;
-  final String city;
-  final String state;
+  final String city; // required
+  final String state; // required
   final String postcode;
-  final String country;
+  final String country; // required
   final String email;
   final String phone;
 
   ShippingAddress({
     this.firstName,
     this.lastName,
+    this.company,
     this.address1,
     this.address2,
     this.city,
@@ -30,6 +32,7 @@ class ShippingAddress extends Equatable {
   List<Object> get props => [
         firstName,
         lastName,
+        company,
         address1,
         address2,
         city,
@@ -46,6 +49,7 @@ class ShippingAddress extends Equatable {
   ShippingAddress copyWith({
     String firstName,
     String lastName,
+    String company,
     String address1,
     String address2,
     String city,
@@ -58,6 +62,7 @@ class ShippingAddress extends Equatable {
     return ShippingAddress(
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
+      company: company ?? this.company,
       address1: address1 ?? this.address1,
       address2: address2 ?? this.address2,
       city: city ?? this.city,
@@ -70,9 +75,10 @@ class ShippingAddress extends Equatable {
   }
 
   Map<String, dynamic> toMap() {
-    return MapHelper.filterNulls({
+    return MapHelper.filterNulls<String, dynamic>({
       'first_name': firstName,
       'last_name': lastName,
+      'company': company,
       'address_1': address1,
       'address_2': address2,
       'city': city,
@@ -91,6 +97,7 @@ class ShippingAddress extends Equatable {
     return ShippingAddress(
       firstName: map['firstName'],
       lastName: map['lastName'],
+      company: map['company'],
       address1: map['address1'],
       address2: map['address2'],
       city: map['city'],
@@ -107,6 +114,7 @@ Map<String, dynamic> _fromMap(Map<String, dynamic> map) {
   return {
     'firstName': map['first_name'],
     'lastName': map['last_name'],
+    'company': map['company'],
     'address1': map['address_1'],
     'address2': map['address_2'],
     'city': map['city'],

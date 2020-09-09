@@ -4,8 +4,9 @@ class ApiException implements Exception {
   final int code;
   final String type;
   final String message;
+  final dynamic data;
 
-  ApiException(this.message, {this.code, this.type});
+  ApiException(this.message, {this.code, this.type, this.data});
 
   String toString() => "ApiException: { statusCode: $code, type: $type, message: $message }";
 
@@ -19,7 +20,12 @@ class ApiException implements Exception {
     return ApiException(res.body, code: code);
   }
 
-  factory ApiException.notFound([String message = 'Not Found']) => ApiException(message, code: 404, type: 'NOT_FOUND');
+  factory ApiException.notFound({String message = 'Not Found', dynamic data}) => ApiException(
+        message,
+        code: 404,
+        type: 'NOT_FOUND',
+        data: data,
+      );
 
   factory ApiException.internalError([String message = 'Internal error', String type = 'INTERNAL_ERROR']) =>
       ApiException(message, code: 500, type: type);

@@ -38,7 +38,7 @@ class MyProductsService {
     if (code == 404) {
       var message = JsonHelper.decodeErrors(res);
       if (message != null) {
-        throw ApiException.notFound(message);
+        throw ApiException.notFound(message: message);
       }
     }
 
@@ -87,7 +87,7 @@ class MyProductsService {
     if (code == 200) return true;
 
     if (code == 404) {
-      throw ApiException.notFound('Product not found');
+      throw ApiException.notFound(message: 'Product not found');
     }
 
     if (code == 500) {

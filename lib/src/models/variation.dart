@@ -57,7 +57,7 @@ class Variation extends Equatable {
   }
 
   Map<String, dynamic> toMap() {
-    return MapHelper.filterNulls({
+    return MapHelper.filterNulls<String, dynamic>({
       'sku': sku,
       'cost_price': costPrice,
       'sale_price': salePrice,

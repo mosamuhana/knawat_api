@@ -90,7 +90,7 @@ class OrderResult extends Equatable {
   }
 
   Map<String, dynamic> toMap() {
-    return MapHelper.filterNulls({
+    return MapHelper.filterNulls<String, dynamic>({
       'id': id,
       'externalId': externalId,
       'status': status,

@@ -92,7 +92,7 @@ class Product extends Equatable {
   }
 
   Map<String, dynamic> toMap() {
-    return MapHelper.filterNulls({
+    return MapHelper.filterNulls<String, dynamic>({
       'sku': sku,
       'name': name?.toMap(),
       'description': description?.toMap(),
