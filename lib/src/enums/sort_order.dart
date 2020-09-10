@@ -1,1 +1,4 @@
-enum SortOrder { Asc, Desc }
+enum SortOrder {
+  Asc,
+  Desc,
+}

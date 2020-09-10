@@ -2,6 +2,7 @@ import '../exceptions.dart';
 import '../helpers.dart';
 import '../internals/query_params.dart';
 import '../models.dart';
+import '../enums.dart';
 import 'http.service.dart';
 
 class WebhookService {
@@ -31,15 +32,14 @@ class WebhookService {
     throw ApiException.from(res);
   }
 
-  Future<Webhook> register({String storeId, String url, String topic}) async {
+  Future<Webhook> register({String storeId, String url, WebhookTopic topic}) async {
     if (url == null) ArgumentError.notNull('url');
     if (topic == null) ArgumentError.notNull('topic');
 
     var bodyData = MapHelper.filterNulls<String, dynamic>({
       'storeId': storeId,
       'url': url,
-      // TODO: convert topic to enum
-      'topic': topic,
+      'topic': topic.asString,
     });
 
     String body = bodyData == null ? null : JsonHelper.encode(bodyData);

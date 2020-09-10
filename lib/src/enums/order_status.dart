@@ -1,4 +1,11 @@
-enum OrderStatus { Draft, Open, Invoiced, PartiallyInvoiced, Void, Overdue }
+enum OrderStatus {
+  Draft,
+  Open,
+  Invoiced,
+  PartiallyInvoiced,
+  Void,
+  Overdue,
+}
 
 extension OrderStatusExt on OrderStatus {
   String get asString {
