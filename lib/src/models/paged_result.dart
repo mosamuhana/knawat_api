@@ -17,12 +17,12 @@ class PagedResult<T> {
     var data = json.decode(res.body);
     if (data == null) return null;
 
-    var _count = data[totalKey];
+    var _total = data[totalKey];
     var _items = data[itemsKey];
 
-    if (_count is int && _items is List) {
+    if (_items is List) {
       return PagedResult._(
-        total: _count,
+        total: _total,
         items: _items.where((x) => x != null).map<T>((x) => mapFn(x)).where((x) => x != null).toList(),
       );
     }
