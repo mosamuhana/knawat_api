@@ -19,7 +19,13 @@ class Category extends Equatable {
   });
 
   @override
-  List<Object> get props => [id, parentId, treeNodeLevel, productsCount, name];
+  List<Object> get props => [
+        id,
+        parentId,
+        treeNodeLevel,
+        productsCount,
+        name,
+      ];
 
   @override
   bool get stringify => true;

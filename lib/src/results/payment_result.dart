@@ -7,6 +7,7 @@ class PaymentResult {
   final double amount;
   final double unusedAmount;
   final double bankCharges;
+  // TODO: convert to Date
   final String date; // Date
   final String accountId;
   final String accountName;
