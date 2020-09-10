@@ -29,11 +29,13 @@ class InvoiceService {
   }
 
   Future<InvoicePaymentResult> applyCredits(String invoiceId, {bool useSavedPaymentMethods, double paymentAmount}) async {
-    var query = QueryParams.fromMap({
+    var bodyData = MapHelper.filterNulls<String, dynamic>({
       'useSavedPaymentMethods': useSavedPaymentMethods,
       'paymentAmount': paymentAmount,
-    })?.toMap();
-    final res = await httpService.get('/invoices/${invoiceId}/credits', query: query);
+    });
+    String body = bodyData == null ? null : JsonHelper.encode(bodyData);
+
+    final res = await httpService.post('/invoices/${invoiceId}/credits', body: body);
     final code = res.statusCode;
 
     if (code == 200) {
