@@ -7,8 +7,7 @@ class PaymentResult {
   final double amount;
   final double unusedAmount;
   final double bankCharges;
-  // TODO: convert to Date
-  final String date; // Date
+  final DateTime date; // Date 2019-08-24
   final String accountId;
   final String accountName;
   final String description;
@@ -55,15 +54,13 @@ class PaymentResult {
       'amount': DynamicHelper.toDouble(map['amount']),
       'unusedAmount': DynamicHelper.toDouble(map['unused_amount']),
       'bankCharges': DynamicHelper.toDouble(map['bank_charges']),
-      'date': map['date'],
+      'date': DateHelper.fromJson(map['date']),
       'accountId': map['account_id'],
       'accountName': map['account_name'],
       'description': map['description'],
       'invoices': ListHelper.fromMap<PaymentInvoice>(map['invoices'], map: (item) => PaymentInvoice.fromMap(item)),
     };
   }
-
-  //factory PaymentResult.fromJson(String source) => PaymentResult.fromMap(json.decode(source));
 }
 
 class PaymentInvoice {

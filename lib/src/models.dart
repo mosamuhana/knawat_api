@@ -15,3 +15,4 @@ export 'models/order_result.dart';
 export 'models/shipping_address.dart';
 export 'models/order.dart';
 export 'models/invoice_payment.dart';
+export 'models/invoice.dart';

@@ -10,11 +10,10 @@ class Invoice extends Equatable {
   final String invoiceNumber;
   final String referenceNumber;
   final String dueDays;
-  // TODO: convert dates
-  final String dueDate; // 2019-08-24
-  final String date; // 2019-08-24
-  final String createdTime; // 2019-08-24
-  final String lastModifiedTime; // 2019-08-24
+  final DateTime dueDate; // 2019-08-24
+  final DateTime date; // 2019-08-24
+  final DateTime createdTime; // 2019-08-24
+  final DateTime lastModifiedTime; // 2019-08-24
   final String coupon;
   final double total;
   final double balance;
@@ -48,9 +47,9 @@ class Invoice extends Equatable {
         status,
         invoiceNumber,
         referenceNumber,
-        date,
-        dueDate,
         dueDays,
+        dueDate,
+        date,
         createdTime,
         lastModifiedTime,
         coupon,
@@ -70,11 +69,11 @@ class Invoice extends Equatable {
     String status,
     String invoiceNumber,
     String referenceNumber,
-    String date,
-    String dueDate,
     String dueDays,
-    String createdTime,
-    String lastModifiedTime,
+    DateTime dueDate,
+    DateTime date,
+    DateTime createdTime,
+    DateTime lastModifiedTime,
     String coupon,
     double total,
     double balance,
@@ -88,9 +87,9 @@ class Invoice extends Equatable {
       status: status ?? this.status,
       invoiceNumber: invoiceNumber ?? this.invoiceNumber,
       referenceNumber: referenceNumber ?? this.referenceNumber,
-      date: date ?? this.date,
-      dueDate: dueDate ?? this.dueDate,
       dueDays: dueDays ?? this.dueDays,
+      dueDate: dueDate ?? this.dueDate,
+      date: date ?? this.date,
       createdTime: createdTime ?? this.createdTime,
       lastModifiedTime: lastModifiedTime ?? this.lastModifiedTime,
       coupon: coupon ?? this.coupon,
@@ -109,11 +108,11 @@ class Invoice extends Equatable {
       'status': status,
       'invoice_number': invoiceNumber,
       'reference_number': referenceNumber,
-      'date': date,
-      'due_date': dueDate,
       'due_days': dueDays,
-      'created_time': createdTime,
-      'last_modified_time': lastModifiedTime,
+      'due_date': DateHelper.toJson(dueDate),
+      'date': DateHelper.toJson(date),
+      'created_time': DateHelper.toJson(createdTime),
+      'last_modified_time': DateHelper.toJson(lastModifiedTime),
       'coupon': coupon,
       'total': total,
       'balance': balance,
@@ -155,11 +154,11 @@ Map<String, dynamic> _fromMap(Map<String, dynamic> map) {
     'status': map['status'],
     'invoiceNumber': map['invoice_number'],
     'referenceNumber': map['reference_number'],
-    'dueDate': map['due_date'],
     'dueDays': map['due_days'],
-    'date': map['date'],
-    'createdTime': map['created_time'],
-    'lastModifiedTime': map['last_modified_time'],
+    'dueDate': DateHelper.fromJson(map['due_date']),
+    'date': DateHelper.fromJson(map['date']),
+    'createdTime': DateHelper.fromJson(map['created_time']),
+    'lastModifiedTime': DateHelper.fromJson(map['last_modified_time']),
     'coupon': map['coupon'],
     'total': DynamicHelper.toDouble(map['total']),
     'balance': DynamicHelper.toDouble(map['balance']),

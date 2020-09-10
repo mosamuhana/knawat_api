@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 
 import '../helpers.dart';
-import '../config.dart';
 
 class Locale extends Equatable {
   final String ar;

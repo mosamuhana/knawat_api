@@ -12,7 +12,7 @@ class CategoryService {
     var query = QueryParams.fromMap({
       'parentId': parentId,
       'treeNodeLevel': treeNodeLevel,
-    }).toMap();
+    })?.toMap();
 
     final res = await httpService.get('/catalog/categories', query: query);
 

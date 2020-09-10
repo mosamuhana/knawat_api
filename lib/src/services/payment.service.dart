@@ -11,7 +11,7 @@ class PaymentService {
 
   PaymentService(this.httpService);
 
-  Future<PagedResult<PaymentResult>> getAll(ListPaymentsParams params) async {
+  Future<PagedResult<PaymentResult>> getAll([ListPaymentsParams params]) async {
     var query = QueryParams.fromMap(params?.toMap())?.toMap();
     final res = await httpService.get('/payments', query: query);
 
