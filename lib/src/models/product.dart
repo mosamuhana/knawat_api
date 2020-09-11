@@ -3,13 +3,13 @@ import 'package:equatable/equatable.dart';
 import '../helpers.dart';
 import 'attribute.dart';
 import 'category.dart';
-import 'locale.dart';
+import 'localized_string.dart';
 import 'variation.dart';
 
 class Product extends Equatable {
   final String sku;
-  final Locale name;
-  final Locale description;
+  final LocalizedString name;
+  final LocalizedString description;
   final List<String> images;
   final DateTime updated;
   final DateTime created;
@@ -61,8 +61,8 @@ class Product extends Equatable {
 
   Product copyWith({
     String sku,
-    Locale name,
-    Locale description,
+    LocalizedString name,
+    LocalizedString description,
     List<String> images,
     DateTime updated,
     DateTime created,
@@ -109,6 +109,11 @@ class Product extends Equatable {
     });
   }
 
+  String get json {
+    var map = toMap();
+    return map == null ? null : JsonHelper.encode(map);
+  }
+
   factory Product.fromMap(Map<String, dynamic> map) {
     map = MapHelper.remap<String, dynamic>(map, _fromMap);
     if (map == null) return null;
@@ -134,8 +139,8 @@ class Product extends Equatable {
 Map<String, dynamic> _fromMap(Map<String, dynamic> map) {
   return {
     'sku': map['sku'],
-    'name': Locale.fromMap(map['name']),
-    'description': Locale.fromMap(map['description']),
+    'name': LocalizedString.fromMap(map['name']),
+    'description': LocalizedString.fromMap(map['description']),
     'images': List<String>.from(map['images']),
     'updated': DateHelper.fromJson(map['updated']),
     'created': DateHelper.fromJson(map['created']),

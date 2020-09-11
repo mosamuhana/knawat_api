@@ -1,4 +1,4 @@
-export 'models/locale.dart';
+export 'models/localized_string.dart';
 export 'models/attribute.dart';
 export 'models/variation.dart';
 export 'models/category.dart';

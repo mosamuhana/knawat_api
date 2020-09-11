@@ -1,9 +1,7 @@
-import 'lib/src/helpers.dart';
-
 void main() async {
-  var json = '2019-08-24';
-  var date = DateHelper.fromJson(json);
+  dynamic list = {'name': 'sam', 'age': 11};
+  var map = list.cast<String, dynamic>();
 
-  print(json);
-  print(date);
+  print(list);
+  print(map);
 }

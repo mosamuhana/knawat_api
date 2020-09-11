@@ -12,7 +12,7 @@ class MyProductsService {
 
   MyProductsService(this.httpService);
 
-  Future<PagedResult<Product>> getProducts({GetProductsParams params}) async {
+  Future<PagedResult<Product>> getProducts(GetProductsParams params) async {
     var query = QueryParams.fromMap(params?.toMap())?.toMap();
     final res = await httpService.get('/catalog/products', query: query);
     final code = res.statusCode;

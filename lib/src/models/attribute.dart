@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 
 import '../helpers.dart';
-import 'locale.dart';
+import 'localized_string.dart';
 
 class Attribute extends Equatable {
-  final Locale name;
-  final List<Locale> options;
+  final LocalizedString name;
+  final List<LocalizedString> options;
 
   const Attribute._({this.name, this.options});
 
@@ -15,7 +15,7 @@ class Attribute extends Equatable {
   @override
   bool get stringify => true;
 
-  Attribute copyWith({Locale name, List<Locale> options}) {
+  Attribute copyWith({LocalizedString name, List<LocalizedString> options}) {
     return Attribute._(
       name: name ?? this.name,
       options: options ?? this.options,
@@ -25,7 +25,7 @@ class Attribute extends Equatable {
   Map<String, dynamic> toMap() {
     return MapHelper.filterNulls<String, dynamic>({
       'name': name?.toMap(),
-      'options': ListHelper.toMap<Locale>(options),
+      'options': ListHelper.toMap<LocalizedString>(options),
     });
   }
 
@@ -42,7 +42,7 @@ class Attribute extends Equatable {
 
 Map<String, dynamic> _fromMap(Map<String, dynamic> map) {
   return {
-    'name': Locale.fromMap(map['name']),
-    'options': ListHelper.fromMap<Locale>(map['options'], map: (item) => Locale.fromMap(item)),
+    'name': LocalizedString.fromMap(map['name']),
+    'options': ListHelper.fromMap<LocalizedString>(map['options'], map: (item) => LocalizedString.fromMap(item)),
   };
 }

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'locale.dart';
+import 'localized_string.dart';
 import '../helpers.dart';
 
 class Category extends Equatable {
@@ -8,7 +8,7 @@ class Category extends Equatable {
   final int parentId;
   final int treeNodeLevel;
   final int productsCount;
-  final Locale name;
+  final LocalizedString name;
 
   const Category._({
     this.id,
@@ -35,7 +35,7 @@ class Category extends Equatable {
     int parentId,
     int treeNodeLevel,
     int productsCount,
-    Locale name,
+    LocalizedString name,
   }) {
     return Category._(
       id: id ?? this.id,
@@ -76,6 +76,6 @@ Map<String, dynamic> _fromMap(Map<String, dynamic> map) {
     'parentId': DynamicHelper.toInt(map['parentId']),
     'treeNodeLevel': DynamicHelper.toInt(map['treeNodeLevel']),
     'productsCount': DynamicHelper.toInt(map['productsCount']),
-    'name': Locale.fromMap(map['name']),
+    'name': LocalizedString.fromMap(map['name']),
   };
 }

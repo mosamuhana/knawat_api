@@ -1,0 +1,199 @@
+{
+    "sku": "BD5078BGD19_011",
+    "name": {
+        "ar": "معطف هودي منتفخ سحاب نسائي",
+        "tr": "5078 FERMUARLI KAPŞ.ŞİŞME MONT",
+        "en": "Women's Zipped Hooded Blown Coat"
+    },
+    "description": {
+        "tr": "<p>Ürün Içerigi : </p><p> Önü boydan Fermuarli yandan çift cepli Astarli Kapsonu Mont.</p><p>Ürün Boyu: 63 cm</p><p>Kumas Özelligi :% 100 Polyester </p><p>Model Bilgileri</p><p>Bedeni : 38 </p><p>Manken Ölçüsü : Boy:176 Gögüs:90 Bel:63 Basen:94</p><p> </p><p>Genel Yikama ve Kullanma Talimatlari</p><p>• El isi ve boncuklu ürünler hassas programda tersten yikanmalidir</p><p>• Baskili ürünler zamanla dökülebilir</p><p>• Yikamada ürünü bozmamak için 30 C'yi asmayiniz</p><p>• Ürünü yikarken yikama talimatina uygun olarak yikayiniz</p><p>• Renkli ürünlerde uygun deterjan kullaniniz</p><p>• Denim olan ürünler ve koyu renkli ürünler açik renkli diger ürünler ile yikanirken boyayabilir. Birlikte yikamayiniz</p><p>• Giysileri kuruturken direkt günes isigina maruz birakmayiniz</p>"
+    },
+    "images": [
+        "https://storage.googleapis.com/knawat-suppliers-img/bigdart/5078BGD19_011/5078-fermuarli-kaps-sisme-mont-58788_1594750926317.jpg",
+        "https://storage.googleapis.com/knawat-suppliers-img/bigdart/5078BGD19_011/5078-fermuarli-kaps-sisme-mont-58789_1594750926318.jpg",
+        "https://storage.googleapis.com/knawat-suppliers-img/bigdart/5078BGD19_011/5078-fermuarli-kaps-sisme-mont-58790_1594750926319.jpg"
+    ],
+    "categories": [
+        {
+            "id": 11450,
+            "treeNodeLevel": 1,
+            "name": {
+                "ar": "ملابس وأحذية وإكسسورات",
+                "tr": "Giyim, Ayakkabı & Aksesuarlar",
+                "en": "Clothing, Shoes & Accessories"
+            }
+        },
+        {
+            "id": 15724,
+            "parentId": 260010,
+            "treeNodeLevel": 3,
+            "name": {
+                "ar": "ملابس نسائية",
+                "tr": "Kadın Giyim",
+                "en": "Women's Clothing"
+            }
+        },
+        {
+            "id": 63862,
+            "parentId": 15724,
+            "treeNodeLevel": 4,
+            "name": {
+                "ar": "معاطف وجاكيتات وفيستات",
+                "tr": "Paltolar, Ceketler Ve Yelekler",
+                "en": "Coats, Jackets & Vests"
+            }
+        },
+        {
+            "id": 260010,
+            "parentId": 11450,
+            "treeNodeLevel": 2,
+            "name": {
+                "ar": "نسائي",
+                "en": "Women"
+            }
+        }
+    ],
+    "attributes": [
+        {
+            "name": {
+                "ar": "لون",
+                "tr": "Renk",
+                "en": "Color"
+            },
+            "options": [
+                {
+                    "ar": "أحمر طوبي",
+                    "tr": "KİREMİT",
+                    "en": "Tile Red"
+                }
+            ]
+        },
+        {
+            "name": {
+                "ar": "مقاس",
+                "tr": "Beden",
+                "en": "Size"
+            },
+            "options": [
+                {
+                    "ar": "36",
+                    "tr": "36",
+                    "en": "36"
+                }
+            ]
+        },
+        {
+            "name": {
+                "ar": "طول المنتج",
+                "tr": "Ürün Boyu",
+                "en": "Product Length"
+            },
+            "options": [
+                {
+                    "ar": "63 سم",
+                    "tr": "63 cm",
+                    "en": "63 cm"
+                }
+            ]
+        },
+        {
+            "name": {
+                "ar": "خصائص القماش",
+                "tr": "Kumas Özelligi",
+                "en": "Fabric Feature"
+            },
+            "options": [
+                {
+                    "ar": "%100 بوليستير",
+                    "tr": "% 100 Polyester",
+                    "en": "%100 Polyester"
+                }
+            ]
+        },
+        {
+            "name": {
+                "ar": "الارتفاع",
+                "tr": "Boy",
+                "en": "Height"
+            },
+            "options": [
+                {
+                    "ar": "176",
+                    "tr": "176",
+                    "en": "176"
+                }
+            ]
+        },
+        {
+            "name": {
+                "ar": "الصدر",
+                "tr": "Gögüs",
+                "en": "Chest"
+            },
+            "options": [
+                {
+                    "ar": "90",
+                    "tr": "90",
+                    "en": "90"
+                }
+            ]
+        },
+        {
+            "name": {
+                "ar": "الوسط",
+                "tr": "Bel",
+                "en": "Waist"
+            },
+            "options": [
+                {
+                    "ar": "63",
+                    "tr": "63",
+                    "en": "63"
+                }
+            ]
+        },
+        {
+            "name": {
+                "ar": "الحوض",
+                "tr": "Basen",
+                "en": "Hip"
+            },
+            "options": [
+                {
+                    "ar": "94",
+                    "tr": "94",
+                    "en": "94"
+                }
+            ]
+        }
+    ],
+    "variations": [
+        {
+            "sku": "BD5078BGD19_01101136",
+            "cost_price": 27.28531365688254,
+            "sale_price": 54.57062731376508,
+            "market_price": 54.57062731376508,
+            "weight": 0.6,
+            "quantity": 5,
+            "attributes": [
+                {
+                    "name": {
+                        "ar": "لون",
+                        "tr": "Renk",
+                        "en": "Color"
+                    }
+                },
+                {
+                    "name": {
+                        "ar": "مقاس",
+                        "tr": "Beden",
+                        "en": "Size"
+                    }
+                }
+            ]
+        }
+    ],
+    "archive": false,
+    "supplier": "1775488000003029449",
+    "tax_class": 8
+}
