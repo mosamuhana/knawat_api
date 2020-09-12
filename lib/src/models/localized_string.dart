@@ -4,14 +4,20 @@ import '../config.dart';
 import '../constants.dart';
 import '../helpers.dart';
 
+// ignore: must_be_immutable
 class LocalizedString extends Equatable {
+  String _lang;
   final String ar;
   final String tr;
   final String en;
 
+  LocalizedString._({this.ar, this.tr, this.en}) : _lang = _getLang(ar: ar, tr: tr, en: en);
+
   String get asString => toString(); //en ?? ar ?? tr ?? '';
 
-  const LocalizedString._({this.ar, this.tr, this.en});
+  String get lang => _lang;
+
+  bool get isRtl => KnawatConfig.isRtl(lang);
 
   @override
   List<Object> get props => [ar, tr, en];
@@ -20,15 +26,15 @@ class LocalizedString extends Equatable {
 
   @override
   String toString() {
-    switch (KnawatConfig.defaultLang) {
+    switch (lang) {
       case LANG_EN:
-        return en ?? ar ?? tr ?? '';
+        return en;
       case LANG_AR:
-        return ar ?? en ?? tr ?? '';
+        return ar;
       case LANG_TR:
-        return tr ?? ar ?? en ?? '';
+        return tr;
     }
-    return ar ?? en ?? tr ?? '';
+    return '';
   }
 
   LocalizedString copyWith({String ar, String tr, String en}) {
@@ -65,4 +71,37 @@ Map<String, dynamic> _fromMap(Map<String, dynamic> map) {
     'en': map['en'],
     'tr': map['tr'],
   };
+}
+
+String _getLang({String en, String ar, String tr}) {
+  switch (KnawatConfig.defaultLang) {
+    case LANG_AR:
+      if (ar != null) {
+        return LANG_AR;
+      } else if (tr != null) {
+        return LANG_TR;
+      } else if (en != null) {
+        return LANG_EN;
+      }
+      break;
+    case LANG_EN:
+      if (en != null) {
+        return LANG_EN;
+      } else if (tr != null) {
+        return LANG_TR;
+      } else if (ar != null) {
+        return LANG_AR;
+      }
+      break;
+    case LANG_TR:
+      if (tr != null) {
+        return LANG_TR;
+      } else if (en != null) {
+        return LANG_EN;
+      } else if (ar != null) {
+        return LANG_AR;
+      }
+      break;
+  }
+  return null;
 }
