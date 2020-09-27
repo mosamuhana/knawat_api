@@ -1,7 +1,10 @@
 void main() async {
-  dynamic list = {'name': 'sam', 'age': 11};
-  var map = list.cast<String, dynamic>();
+  String str = null;
 
-  print(list);
-  print(map);
+  print(str.or('N/A'));
+}
+
+extension StringExtension on String {
+  bool get isEmptyOrNull => this == null || isEmpty;
+  String or(String def) => this == null ? def : this;
 }
